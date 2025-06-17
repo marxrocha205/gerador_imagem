@@ -1,10 +1,16 @@
+# 1. IMPORTE A BIBLIOTECA CORS
 from flask import Flask, request, send_file, jsonify
+from flask_cors import CORS
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
 import io
 
 # Inicializa a aplicação Flask
 app = Flask(__name__)
+
+# 2. HABILITE O CORS PARA TODA A APLICAÇÃO
+#    Isso permite que seu chatbot (rodando no Live Server) acesse esta API.
+CORS(app)
 
 def gerar_imagem(nome_pessoa):
     """
@@ -84,9 +90,11 @@ def api_gerar_imagem():
     # Retorna a imagem como um arquivo na resposta da API
     return send_file(
         buffer,
-        mimetype='image/png',
-        as_attachment=True,
-        download_name=f'imagem_{nome.replace(" ", "_").lower()}.png'
+        mimetype='image/png'
+        # 3. MUDANÇA IMPORTANTE: A linha abaixo foi REMOVIDA.
+        #    O JavaScript agora cuida de iniciar o download.
+        #    as_attachment=True, 
+        #    download_name=f'imagem_{nome.replace(" ", "_").lower()}.png'
     )
 
 # ---- Roda a Aplicação ----
